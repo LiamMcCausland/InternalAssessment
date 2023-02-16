@@ -25,7 +25,7 @@ public class MainScreen extends javax.swing.JFrame {
     public int quizCount = 0;
     public static int quizOffset;
     public QuizManager quizManager = new QuizManager();
-    
+
     //UI
     public JButton button = new JButton();
 
@@ -39,7 +39,6 @@ public class MainScreen extends javax.swing.JFrame {
         sideButtons(quizesLabel);
         sideButtons(settingsLabel);
         setButtons(false);
-        checkButtons();
     }
 
     /**
@@ -133,7 +132,8 @@ public class MainScreen extends javax.swing.JFrame {
         } else if (name == "") {
             JOptionPane.showMessageDialog(null, "enter a name!");
         } else {
-            create(name);
+            //create a new quiz
+            createQuiz(name);
         }
     }//GEN-LAST:event_createButtonActionPerformed
 
@@ -175,7 +175,7 @@ public class MainScreen extends javax.swing.JFrame {
     }
 
     /**
-     * sets components of the jframe
+     * sets components of the JFrame
      */
     private void setFrame() {
         this.setTitle("Quiza");
@@ -240,7 +240,6 @@ public class MainScreen extends javax.swing.JFrame {
             setButtons(true);
             trigger = true;
         } else if (trigger) {
-            
             label.setForeground(Color.BLACK);
             trigger = false;
             setButtons(false);
@@ -248,37 +247,33 @@ public class MainScreen extends javax.swing.JFrame {
         setLabel();
     }
 
-    private void create(String name) {
-        Quiz quiz = new Quiz(name);
-        quiz.createQuiz();
-        quizManager.addQuiz(quiz, quizCount);
-        
-        JLabel newQuiz = new JLabel(quiz.name);
-        newQuiz.setLocation(190, MainScreen.quizOffset + 130);
-        newQuiz.setSize(650, 30);
-        Border blackline = BorderFactory.createLineBorder(Color.black);
-        newQuiz.setBorder(blackline);
-        newQuiz.setVisible(true);
-        add(newQuiz);
-
-        button = new JButton("Options");
-        button.setLocation(800, MainScreen.quizOffset + 130);
-        button.setSize(30, 30);
-        button.setVisible(true);
-        add(button);
-        
-
-        SwingUtilities.updateComponentTreeUI(this);
-        setLabel();
-        quizOffset += 35;
+    private void createQuiz(String name) {
+        Quiz newQuiz = new Quiz(name);
+        newQuiz.createQuiz();
+        QuizManager.addQuiz(newQuiz, quizCount);
         quizCount++;
+        quizOffset += 35;
+        showQuiz();
     }
 
-    private void checkButtons() {
-        if (button.getModel().isPressed()) {
-            System.out.println("the button is pressed");
-        } else if (button == null){
-            System.out.println("nothing");
+    private void showQuiz() {
+        for (int i = -1; i < QuizManager.manager.size(); i++) {           
+            System.out.println("Showing..."); 
+            if (QuizManager.manager.get(i) == null) {
+                System.out.println("No Quizes");
+            } else {
+                JLabel newQuiz = new JLabel("Quiz: " + QuizManager.manager.get(i).name);
+                newQuiz.setLocation(190, MainScreen.quizOffset + 130);
+                newQuiz.setSize(650, 30);
+                //Border blackline = BorderFactory.createLineBorder(Color.black);
+                //newQuiz.setBorder(blackline);
+                newQuiz.setVisible(true);
+                add(newQuiz);
+                System.out.println("Quiz Visualized");
+            }
+            SwingUtilities.updateComponentTreeUI(this);
+            setLabel();
         }
     }
+
 }

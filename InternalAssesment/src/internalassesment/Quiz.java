@@ -15,13 +15,19 @@ public class Quiz {
         this.name = name;
     }
 
-    public LinkedList createQuiz() {
-        LinkedList<String> newQuiz = new LinkedList<>();
+    public String[] createQuiz() {
+        String[] newQuiz = null;
+        System.out.println("Quiz Created");
         return newQuiz;
     }
 
-    public void addQuestion(LinkedList quiz, String question, int index) {
-        quiz.add(question, index);
+    public void addQuestion(String[] quiz, String question, int index) {
+        for (int i = 0; i < quiz.length; i++) {
+            if (quiz[i] == null) {
+                quiz[i] = question;
+            }
+        }
+        System.out.println("Question Added");
     }
 
 }

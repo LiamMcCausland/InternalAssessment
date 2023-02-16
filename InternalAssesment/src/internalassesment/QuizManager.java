@@ -3,20 +3,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package internalassesment;
-import internalassesment.Quiz;
 /**
  *
  * @author l.mccausland
  */
-public class QuizManager {
-    
-    public static LinkedList<Quiz> quizes;
+public class QuizManager { 
+    public static LinkedList<Quiz> manager = new LinkedList();
     
     public QuizManager() {
-        quizes = new LinkedList();
+        
     }
     
     public static void addQuiz(Quiz quiz, int index) {
-        quizes.add(quiz, index);
+        manager.add(quiz, index);
+        System.out.println(manager.size());
+        System.out.println("Quiz Added");
     }
 }
