@@ -29,5 +29,4 @@ public class Quiz {
         }
         System.out.println("Question Added");
     }
-
 }

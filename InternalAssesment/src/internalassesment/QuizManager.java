@@ -19,4 +19,13 @@ public class QuizManager {
         System.out.println(manager.size());
         System.out.println("Quiz Added");
     }
+    
+    public static int getIndex(Quiz quiz) {
+        for (int i = 0; i < manager.size(); i++) {
+            if (manager.get(i).name == quiz.name) {
+                return i;
+            } 
+        }
+        return 0;
+    }
 }

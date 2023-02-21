@@ -1,33 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package internalassesment;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Image;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
 
 /**
  *
  * @author l.mccausland
  */
 public class MainScreen extends javax.swing.JFrame {
-
-    public boolean trigger;
-    public int quizCount = 0;
-    public static int quizOffset;
-    public QuizManager quizManager = new QuizManager();
-
-    //UI
-    public JButton button = new JButton();
+    
+    //variable to keep count of the quizes
+    public int quizCount = 0; 
 
     /**
      * Creates new form MainScreen
@@ -35,10 +17,6 @@ public class MainScreen extends javax.swing.JFrame {
     public MainScreen() {
         initComponents();
         setFrame();
-        setLabel();
-        sideButtons(quizesLabel);
-        sideButtons(settingsLabel);
-        setButtons(false);
     }
 
     /**
@@ -50,96 +28,106 @@ public class MainScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        quizesLabel = new javax.swing.JLabel();
-        settingsLabel = new javax.swing.JLabel();
-        quitLabel = new javax.swing.JLabel();
         createButton = new javax.swing.JButton();
-        title = new javax.swing.JLabel();
-        sideBarLabel = new javax.swing.JLabel();
-        topBarLabel = new javax.swing.JLabel();
+        startButton = new javax.swing.JButton();
+        quizList = new java.awt.List();
+        editButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
-        getContentPane().setLayout(null);
 
-        quizesLabel.setText("View Quizes");
-        quizesLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                quizesLabelMouseClicked(evt);
-            }
-        });
-        getContentPane().add(quizesLabel);
-        quizesLabel.setBounds(40, 160, 140, 50);
-
-        settingsLabel.setText("Settings");
-        settingsLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                settingsLabelMouseClicked(evt);
-            }
-        });
-        getContentPane().add(settingsLabel);
-        settingsLabel.setBounds(50, 220, 130, 50);
-
-        quitLabel.setForeground(new java.awt.Color(51, 51, 51));
-        quitLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/xButton.png"))); // NOI18N
-        quitLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                quitLabelMouseClicked(evt);
-            }
-        });
-        getContentPane().add(quitLabel);
-        quitLabel.setBounds(800, 20, 40, 40);
-
-        createButton.setFont(new java.awt.Font("Segoe UI", 0, 8)); // NOI18N
-        createButton.setText("+");
+        createButton.setText("Create Quiz");
         createButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createButtonActionPerformed(evt);
             }
         });
-        getContentPane().add(createButton);
-        createButton.setBounds(220, 20, 40, 40);
 
-        title.setText("Q");
-        getContentPane().add(title);
-        title.setBounds(40, 10, 110, 70);
+        startButton.setText("Start!");
+        startButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startButtonActionPerformed(evt);
+            }
+        });
 
-        sideBarLabel.setBackground(new java.awt.Color(102, 153, 255));
-        sideBarLabel.setOpaque(true);
-        getContentPane().add(sideBarLabel);
-        sideBarLabel.setBounds(0, 0, 180, 690);
+        editButton.setText("Edit");
+        editButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editButtonActionPerformed(evt);
+            }
+        });
 
-        topBarLabel.setBackground(new java.awt.Color(51, 51, 51));
-        topBarLabel.setOpaque(true);
-        getContentPane().add(topBarLabel);
-        topBarLabel.setBounds(180, 0, 700, 80);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(createButton, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                    .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(editButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(43, 43, 43)
+                .addComponent(quizList, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(46, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(quizList, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(createButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(30, Short.MAX_VALUE))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void quitLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_quitLabelMouseClicked
-        System.exit(0);
-    }//GEN-LAST:event_quitLabelMouseClicked
-
-    private void quizesLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_quizesLabelMouseClicked
-        onClick(quizesLabel);
-    }//GEN-LAST:event_quizesLabelMouseClicked
-
+    /**
+     * Asks the user to enter the name of the quiz they want to create, then creates it.
+     * @param evt 
+     */
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
+        // Create Input Dialog
         String name = JOptionPane.showInputDialog("Enter quiz name: ");
-        if (name == null) {
+        if (null == name) {
             JOptionPane.showMessageDialog(null, "enter a name!");
-        } else if (name == "") {
-            JOptionPane.showMessageDialog(null, "enter a name!");
-        } else {
-            //create a new quiz
-            createQuiz(name);
+            // if the user adds spaces, tell them to enter something
+        } else // if the user enters nothing, tell them to
+        switch (name) {
+            case "":
+                JOptionPane.showMessageDialog(null, "enter a name!");
+                // if the user enters the name, create the quiz
+                break;
+            default:
+                //create a new quiz
+                createQuiz(name);
+                break;
         }
     }//GEN-LAST:event_createButtonActionPerformed
-
-    private void settingsLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsLabelMouseClicked
-        //onClick(settingsLabel);
-    }//GEN-LAST:event_settingsLabelMouseClicked
+    /**
+     * Checks if the "Start!" button was clicked and starts the selected quiz
+     * @param evt 
+     */
+    private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
+        quizList.getSelectedItem();
+        //outputs the selected index for debugging purposes
+        System.out.println(QuizManager.manager.get(quizList.getSelectedIndex()).name);
+    }//GEN-LAST:event_startButtonActionPerformed
+    
+     /**
+      * Checks if the edit button was clicked and edits the selected quiz
+      * @param evt 
+      */
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        quizList.getSelectedItem();
+    }//GEN-LAST:event_editButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -175,105 +163,41 @@ public class MainScreen extends javax.swing.JFrame {
     }
 
     /**
-     * sets components of the JFrame
+     * sets the visual properties of the JFrame
      */
     private void setFrame() {
+        //set window title
         this.setTitle("Quiza");
-        this.setSize(880, 525);
+        //set frame size
+        this.setSize(727, 480);
+        //set to dispose on close
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        //set location to show up in the middle (null) 
         this.setLocationRelativeTo(null);
+        //set frame visible
         this.setVisible(true);
+        //set the frame resizabke property to false
         this.setResizable(false);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton createButton;
-    private javax.swing.JLabel quitLabel;
-    private javax.swing.JLabel quizesLabel;
-    private javax.swing.JLabel settingsLabel;
-    private javax.swing.JLabel sideBarLabel;
-    private javax.swing.JLabel title;
-    private javax.swing.JLabel topBarLabel;
+    private javax.swing.JButton editButton;
+    private java.awt.List quizList;
+    private javax.swing.JButton startButton;
     // End of variables declaration//GEN-END:variables
 
     /**
-     * sets the visual appearance of the labels;
+     * Creates a new quiz and adds it to the JList
+     * 
+     * @param name the name the user entered
      */
-    private void setLabel() {
-        // set Image Icon for the quit button
-
-        // create new Image Icon variable
-        ImageIcon quitIcon;
-        // set the icon variable to the desired image
-        quitIcon = new ImageIcon(getClass().getResource("/pictures/xButton.png"));
-        // convert it into an image
-        Image quitImg = quitIcon.getImage();
-        // set the scale of the image to the label it fits
-        Image quitImgScale = quitImg.getScaledInstance(quitLabel.getWidth(), quitLabel.getHeight(), Image.SCALE_SMOOTH);
-        // created the scaled version of the icon
-        ImageIcon quitScaledIcon = new ImageIcon(quitImgScale);
-        // set the label icon to the scaled version
-        quitLabel.setIcon(quitScaledIcon);
-        // set the label opaque
-        quitLabel.setOpaque(true);
-        // set the background of the label to match the background of the button;
-        quitLabel.setBackground(topBarLabel.getBackground());
-        // add it to the frame
-        add(quitLabel);
-
-        //change title text
-        title.setFont(new Font("SansSerif", Font.PLAIN, 24));
-
-    }
-
-    private void setButtons(boolean bool) {
-        createButton.setVisible(bool);
-    }
-
-    private void sideButtons(JLabel label) {
-        label.setFont(new Font("SansSerif", Font.PLAIN, 14));
-    }
-
-    private void onClick(JLabel label) {
-        if (!trigger) {
-            label.setForeground(Color.CYAN);
-            setButtons(true);
-            trigger = true;
-        } else if (trigger) {
-            label.setForeground(Color.BLACK);
-            trigger = false;
-            setButtons(false);
-        }
-        setLabel();
-    }
-
     private void createQuiz(String name) {
-        Quiz newQuiz = new Quiz(name);
-        newQuiz.createQuiz();
-        QuizManager.addQuiz(newQuiz, quizCount);
+        //adds the quiz to the list
+        quizList.add(name);
         quizCount++;
-        quizOffset += 35;
-        showQuiz();
+        Quiz newQuiz = new Quiz(name);
+        QuizManager.addQuiz(newQuiz, quizCount);
+        System.out.println(newQuiz.name + QuizManager.getIndex(newQuiz));
     }
-
-    private void showQuiz() {
-        for (int i = -1; i < QuizManager.manager.size(); i++) {           
-            System.out.println("Showing..."); 
-            if (QuizManager.manager.get(i) == null) {
-                System.out.println("No Quizes");
-            } else {
-                JLabel newQuiz = new JLabel("Quiz: " + QuizManager.manager.get(i).name);
-                newQuiz.setLocation(190, MainScreen.quizOffset + 130);
-                newQuiz.setSize(650, 30);
-                //Border blackline = BorderFactory.createLineBorder(Color.black);
-                //newQuiz.setBorder(blackline);
-                newQuiz.setVisible(true);
-                add(newQuiz);
-                System.out.println("Quiz Visualized");
-            }
-            SwingUtilities.updateComponentTreeUI(this);
-            setLabel();
-        }
-    }
-
 }
