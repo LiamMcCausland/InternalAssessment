@@ -1,5 +1,10 @@
 package internalassesment;
 
+import java.awt.Color;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import javax.swing.JOptionPane;
 
 /**
@@ -7,16 +12,19 @@ import javax.swing.JOptionPane;
  * @author l.mccausland
  */
 public class MainScreen extends javax.swing.JFrame {
-    
-    //variable to keep count of the quizes
-    public int quizCount = 0; 
 
+    //variable to keep count of the quizes
+    public int quizCount = 0;
+    final String username = System.getProperty("user.name");
     /**
      * Creates new form MainScreen
      */
     public MainScreen() {
         initComponents();
         setFrame();
+        setList();
+        setButtons();
+        getFiles();
     }
 
     /**
@@ -28,18 +36,26 @@ public class MainScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        createButton = new javax.swing.JButton();
-        startButton = new javax.swing.JButton();
         quizList = new java.awt.List();
+        sideBar = new javax.swing.JPanel();
         editButton = new javax.swing.JButton();
+        startButton = new javax.swing.JButton();
+        createButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        refreshButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
+        getContentPane().setLayout(null);
+        getContentPane().add(quizList);
+        quizList.setBounds(220, 60, 376, 305);
 
-        createButton.setText("Create Quiz");
-        createButton.addActionListener(new java.awt.event.ActionListener() {
+        sideBar.setBackground(new java.awt.Color(0, 0, 0));
+
+        editButton.setText("Edit");
+        editButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createButtonActionPerformed(evt);
+                editButtonActionPerformed(evt);
             }
         });
 
@@ -50,48 +66,67 @@ public class MainScreen extends javax.swing.JFrame {
             }
         });
 
-        editButton.setText("Edit");
-        editButton.addActionListener(new java.awt.event.ActionListener() {
+        createButton.setText("Create Quiz");
+        createButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editButtonActionPerformed(evt);
+                createButtonActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+        jButton1.setText("Delete");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout sideBarLayout = new javax.swing.GroupLayout(sideBar);
+        sideBar.setLayout(sideBarLayout);
+        sideBarLayout.setHorizontalGroup(
+            sideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sideBarLayout.createSequentialGroup()
                 .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(sideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(createButton, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                    .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(editButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(43, 43, 43)
-                .addComponent(quizList, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(46, Short.MAX_VALUE))
+                    .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                    .addComponent(editButton, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(quizList, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(createButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(30, Short.MAX_VALUE))
+        sideBarLayout.setVerticalGroup(
+            sideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sideBarLayout.createSequentialGroup()
+                .addGap(69, 69, 69)
+                .addComponent(createButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
+                .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(249, Short.MAX_VALUE))
         );
+
+        getContentPane().add(sideBar);
+        sideBar.setBounds(0, 0, 190, 540);
+
+        refreshButton.setText("Refresh");
+        refreshButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshButtonActionPerformed(evt);
+            }
+        });
+        getContentPane().add(refreshButton);
+        refreshButton.setBounds(570, 10, 75, 30);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Asks the user to enter the name of the quiz they want to create, then creates it.
-     * @param evt 
+     * Asks the user to enter the name of the quiz they want to create, then
+     * creates it.
+     *
+     * @param evt
      */
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
         // Create Input Dialog
@@ -100,34 +135,48 @@ public class MainScreen extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "enter a name!");
             // if the user adds spaces, tell them to enter something
         } else // if the user enters nothing, tell them to
-        switch (name) {
-            case "":
-                JOptionPane.showMessageDialog(null, "enter a name!");
-                // if the user enters the name, create the quiz
-                break;
-            default:
-                //create a new quiz
-                createQuiz(name);
-                break;
-        }
+            switch (name) {
+                case "":
+                    JOptionPane.showMessageDialog(null, "enter a name!");
+                    // if the user enters the name, create the quiz
+                    break;
+                default:
+                    //create a new quiz
+                    createQuiz(name);
+                    break;
+            }
     }//GEN-LAST:event_createButtonActionPerformed
     /**
      * Checks if the "Start!" button was clicked and starts the selected quiz
-     * @param evt 
+     *
+     * @param evt
      */
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
-        quizList.getSelectedItem();
-        //outputs the selected index for debugging purposes
-        System.out.println(QuizManager.manager.get(quizList.getSelectedIndex()).name);
+        quizList.getSelectedIndex();
+        String name = quizList.getSelectedItem();
+        String location = "C:\\Users\\l.mccausland\\Desktop\\Files\\" + name + ".txt";
+        File quiz = new File(location);
+
+
     }//GEN-LAST:event_startButtonActionPerformed
-    
-     /**
-      * Checks if the edit button was clicked and edits the selected quiz
-      * @param evt 
-      */
+
+    /**
+     * Checks if the edit button was clicked and edits the selected quiz
+     *
+     * @param evt
+     */
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        quizList.getSelectedItem();
+        int item = quizList.getSelectedIndex();
+        edit(item);
     }//GEN-LAST:event_editButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        deleteQuiz();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+         getFiles();
+    }//GEN-LAST:event_refreshButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -174,22 +223,32 @@ public class MainScreen extends javax.swing.JFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         //set location to show up in the middle (null) 
         this.setLocationRelativeTo(null);
+        //set background color
+        this.getContentPane().setBackground(new Color(173, 216, 230)); //or whatever color you want in the RGB range
         //set frame visible
         this.setVisible(true);
         //set the frame resizabke property to false
         this.setResizable(false);
+
+        sideBar.setBackground(new Color(20, 20, 20));
+        sideBar.setVisible(true);
+        add(sideBar);
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton createButton;
     private javax.swing.JButton editButton;
+    private javax.swing.JButton jButton1;
     private java.awt.List quizList;
+    private javax.swing.JButton refreshButton;
+    private javax.swing.JPanel sideBar;
     private javax.swing.JButton startButton;
     // End of variables declaration//GEN-END:variables
 
     /**
      * Creates a new quiz and adds it to the JList
-     * 
+     *
      * @param name the name the user entered
      */
     private void createQuiz(String name) {
@@ -198,6 +257,76 @@ public class MainScreen extends javax.swing.JFrame {
         quizCount++;
         Quiz newQuiz = new Quiz(name);
         QuizManager.addQuiz(newQuiz, quizCount);
-        System.out.println(newQuiz.name + QuizManager.getIndex(newQuiz));
+
+        // set save location
+        String first = "C:\\Users\\" + username + "\\Desktop\\Projects\\InternalAssesment\\src\\files";
+        String second = name;
+        String last = ".txt";
+        String path = first + second + last;
+        // save quiz to permanent storage
+        try {
+            // Create instance (object) of the classes needed and connect the 
+            // the two classes with the file name we just made..................
+            FileWriter writer = new FileWriter(path);
+            PrintWriter printer = new PrintWriter(writer);
+            // Now write to the file
+            printer.print(newQuiz); // Call class method to write to file
+            // Sever (disconnect) from file
+            printer.close(); // Close connection
+            System.out.println("File Created");
+        } catch (IOException e) {
+            System.out.println("File write error"); //  Error message
+        }
+    }
+
+    /**
+     * Set AWT List visuals
+     */
+    private void setList() {
+        // set list visuals
+
+        quizList.setBackground(Color.LIGHT_GRAY);
+        quizList.setForeground(Color.BLACK);
+    }
+
+    /**
+     * Set side buttons visual properties
+     */
+    private void setButtons() {
+        // set visuals for buttons 
+    }
+
+    private void edit(int item) {
+        // edit quiz questions and properties
+        // get the quiz from the quiz manager
+        // open the quiz and edit the questions
+
+    }
+
+    private void getFiles() {
+        // Clear list
+        quizList.removeAll();
+        
+        // Get already created files
+        File folder = new File("C:\\Users\\" + username + "\\Desktop\\Projects\\InternalAssesment\\src\\files");
+        File[] listOfFiles = folder.listFiles();
+
+        for (int i = 0; i < listOfFiles.length; i++) {
+            if (listOfFiles[i].isFile()) {
+                System.out.println("File " + listOfFiles[i].getName());
+                quizList.add(listOfFiles[i].getName(), i);
+            } else if (listOfFiles[i].isDirectory()) {
+                System.out.println("Directory " + listOfFiles[i].getName());
+                quizList.add(listOfFiles[i].getName(), i);
+            }
+            System.out.println("File " + i + " added");
+        }
+    }
+
+    private void deleteQuiz() {
+        String item = quizList.getSelectedItem();
+        quizList.remove(item);
+        File fileToDelete = new File("C:\\Users\\" + username + "\\Desktop\\Projects\\InternalAssesment\\src\\files" + item);
+        fileToDelete.delete();
     }
 }
