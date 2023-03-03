@@ -1,5 +1,6 @@
 package internalassesment;
 
+import io.FileHandler;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileWriter;
@@ -16,6 +17,7 @@ public class MainScreen extends javax.swing.JFrame {
     //variable to keep count of the quizes
     public int quizCount = 0;
     final String username = System.getProperty("user.name");
+
     /**
      * Creates new form MainScreen
      */
@@ -175,7 +177,7 @@ public class MainScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
-         getFiles();
+        getFiles();
     }//GEN-LAST:event_refreshButtonActionPerformed
 
     /**
@@ -263,20 +265,12 @@ public class MainScreen extends javax.swing.JFrame {
         String second = name;
         String last = ".txt";
         String path = first + second + last;
+        
+        File file = new File(path);
+        
         // save quiz to permanent storage
-        try {
-            // Create instance (object) of the classes needed and connect the 
-            // the two classes with the file name we just made..................
-            FileWriter writer = new FileWriter(path);
-            PrintWriter printer = new PrintWriter(writer);
-            // Now write to the file
-            printer.print(newQuiz); // Call class method to write to file
-            // Sever (disconnect) from file
-            printer.close(); // Close connection
-            System.out.println("File Created");
-        } catch (IOException e) {
-            System.out.println("File write error"); //  Error message
-        }
+        FileHandler fileHandler = new FileHandler();
+        fileHandler.save(newQuiz.toString(), file);
     }
 
     /**
@@ -306,7 +300,7 @@ public class MainScreen extends javax.swing.JFrame {
     private void getFiles() {
         // Clear list
         quizList.removeAll();
-        
+
         // Get already created files
         File folder = new File("C:\\Users\\" + username + "\\Desktop\\Projects\\InternalAssesment\\src\\files");
         File[] listOfFiles = folder.listFiles();
