@@ -168,7 +168,7 @@ public class MainScreen extends javax.swing.JFrame {
      * @param evt
      */
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        int item = quizList.getSelectedIndex();
+        String item = quizList.getSelectedItem();
         edit(item);
     }//GEN-LAST:event_editButtonActionPerformed
 
@@ -254,23 +254,28 @@ public class MainScreen extends javax.swing.JFrame {
      * @param name the name the user entered
      */
     private void createQuiz(String name) {
-        //adds the quiz to the list
+        // adds the quiz to the list
         quizList.add(name);
         quizCount++;
         Quiz newQuiz = new Quiz(name);
         QuizManager.addQuiz(newQuiz, quizCount);
 
-        // set save location
-        String first = "C:\\Users\\" + username + "\\Desktop\\Projects\\InternalAssesment\\src\\files";
+        // set save location or name
+        String first = "C:\\Users\\" + username + "\\Desktop\\files\\";
         String second = name;
         String last = ".txt";
         String path = first + second + last;
-        
-        File file = new File(path);
-        
+
         // save quiz to permanent storage
-        FileHandler fileHandler = new FileHandler();
-        fileHandler.save(newQuiz.toString(), file);
+        try {
+            FileWriter writer = new FileWriter(path);   // First object
+            PrintWriter printer = new PrintWriter(writer);
+            printer.print(newQuiz);        // Call class method to write to file   
+            printer.close();                                // Close connection
+        } catch (IOException error) {                         // catch error....
+            System.out.println("File write error");        // output message..
+        }
+
     }
 
     /**
@@ -290,11 +295,29 @@ public class MainScreen extends javax.swing.JFrame {
         // set visuals for buttons 
     }
 
-    private void edit(int item) {
+    private void edit(String item) {
         // edit quiz questions and properties
-        // get the quiz from the quiz manager
-        // open the quiz and edit the questions
+        if (item == null) {
+            System.out.println("Select a quiz");
+        } else {
+            String newQuestion = JOptionPane.showInputDialog(null, "Enter a question: ");
+            addToQuiz(item, newQuestion);
+        }
 
+        // open the quiz and edit the questions
+    }
+
+    public void addToQuiz(String item, String text) {
+        try {
+            File quizToEdit = new File("C:\\Users\\" + username + "\\Desktop\\files\\" + item);
+            FileWriter writer = new FileWriter(quizToEdit.getPath());
+            PrintWriter printer = new PrintWriter(writer);
+            printer.print(text + "\n");
+            printer.close();
+            System.out.println("Question Added");
+        } catch (IOException e) {
+            System.out.println("File Write error");
+        }
     }
 
     private void getFiles() {
@@ -302,7 +325,7 @@ public class MainScreen extends javax.swing.JFrame {
         quizList.removeAll();
 
         // Get already created files
-        File folder = new File("C:\\Users\\" + username + "\\Desktop\\Projects\\InternalAssesment\\src\\files");
+        File folder = new File("C:\\Users\\" + username + "\\Desktop\\files\\");
         File[] listOfFiles = folder.listFiles();
 
         for (int i = 0; i < listOfFiles.length; i++) {
@@ -312,6 +335,8 @@ public class MainScreen extends javax.swing.JFrame {
             } else if (listOfFiles[i].isDirectory()) {
                 System.out.println("Directory " + listOfFiles[i].getName());
                 quizList.add(listOfFiles[i].getName(), i);
+            } else {
+                System.out.println("Empty");
             }
             System.out.println("File " + i + " added");
         }
@@ -320,7 +345,7 @@ public class MainScreen extends javax.swing.JFrame {
     private void deleteQuiz() {
         String item = quizList.getSelectedItem();
         quizList.remove(item);
-        File fileToDelete = new File("C:\\Users\\" + username + "\\Desktop\\Projects\\InternalAssesment\\src\\files" + item);
+        File fileToDelete = new File("C:\\Users\\" + username + "\\Desktop\\files\\" + item);
         fileToDelete.delete();
     }
 }
