@@ -20,8 +20,6 @@ public class QuizManager {
     
     public static void addQuiz(Quiz quiz, int index) {
         manager.add(quiz, index);
-        System.out.println(manager.size());
-        System.out.println("Quiz Added");
     }
     
     public static int getIndex(Quiz quiz) {

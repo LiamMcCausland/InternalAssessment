@@ -1,7 +1,10 @@
 package internalassesment;
 
-import io.FileHandler;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatArcDarkContrastIJTheme;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatArcDarkIJTheme;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatSolarizedDarkContrastIJTheme;
 import java.awt.Color;
+import java.awt.Font;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -39,20 +42,17 @@ public class MainScreen extends javax.swing.JFrame {
     private void initComponents() {
 
         quizList = new java.awt.List();
-        sideBar = new javax.swing.JPanel();
         editButton = new javax.swing.JButton();
         startButton = new javax.swing.JButton();
         createButton = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
+        outputLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
-        getContentPane().setLayout(null);
-        getContentPane().add(quizList);
-        quizList.setBounds(220, 60, 376, 305);
 
-        sideBar.setBackground(new java.awt.Color(0, 0, 0));
+        quizList.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         editButton.setText("Edit");
         editButton.addActionListener(new java.awt.event.ActionListener() {
@@ -82,46 +82,56 @@ public class MainScreen extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout sideBarLayout = new javax.swing.GroupLayout(sideBar);
-        sideBar.setLayout(sideBarLayout);
-        sideBarLayout.setHorizontalGroup(
-            sideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(sideBarLayout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addGroup(sideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(createButton, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                    .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                    .addComponent(editButton, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(37, Short.MAX_VALUE))
-        );
-        sideBarLayout.setVerticalGroup(
-            sideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(sideBarLayout.createSequentialGroup()
-                .addGap(69, 69, 69)
-                .addComponent(createButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
-                .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(249, Short.MAX_VALUE))
-        );
-
-        getContentPane().add(sideBar);
-        sideBar.setBounds(0, 0, 190, 540);
-
         refreshButton.setText("Refresh");
         refreshButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 refreshButtonActionPerformed(evt);
             }
         });
-        getContentPane().add(refreshButton);
-        refreshButton.setBounds(570, 10, 75, 30);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(refreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(createButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(editButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(57, 57, 57)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(outputLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(quizList, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))))
+                .addContainerGap(100, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(46, 46, 46)
+                .addComponent(refreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(createButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(startButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(editButton))
+                    .addComponent(quizList, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(outputLabel)
+                .addContainerGap(56, Short.MAX_VALUE))
+        );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
@@ -156,7 +166,7 @@ public class MainScreen extends javax.swing.JFrame {
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         quizList.getSelectedIndex();
         String name = quizList.getSelectedItem();
-        String location = "C:\\Users\\l.mccausland\\Desktop\\Files\\" + name + ".txt";
+        String location = "C:\\Users\\l.mccausland\\Documents\\Files\\" + name + ".txt";
         File quiz = new File(location);
 
 
@@ -184,32 +194,17 @@ public class MainScreen extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            FlatArcDarkContrastIJTheme.setup();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        //</editor-fold>
-
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new MainScreen().setVisible(true);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new MainScreen().setVisible(true);
+            }
         });
     }
 
@@ -220,31 +215,26 @@ public class MainScreen extends javax.swing.JFrame {
         //set window title
         this.setTitle("Quiza");
         //set frame size
-        this.setSize(727, 480);
+        this.setSize(650, 480);
         //set to dispose on close
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         //set location to show up in the middle (null) 
         this.setLocationRelativeTo(null);
         //set background color
-        this.getContentPane().setBackground(new Color(173, 216, 230)); //or whatever color you want in the RGB range
+        // this.getContentPane().setBackground(new Color(173, 216, 230)); //or whatever color you want in the RGB range
         //set frame visible
         this.setVisible(true);
         //set the frame resizabke property to false
         this.setResizable(false);
-
-        sideBar.setBackground(new Color(20, 20, 20));
-        sideBar.setVisible(true);
-        add(sideBar);
-
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton createButton;
     private javax.swing.JButton editButton;
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel outputLabel;
     private java.awt.List quizList;
     private javax.swing.JButton refreshButton;
-    private javax.swing.JPanel sideBar;
     private javax.swing.JButton startButton;
     // End of variables declaration//GEN-END:variables
 
@@ -261,7 +251,7 @@ public class MainScreen extends javax.swing.JFrame {
         QuizManager.addQuiz(newQuiz, quizCount);
 
         // set save location or name
-        String first = "C:\\Users\\" + username + "\\Desktop\\files\\";
+        String first = "C:\\Users\\" + username + "\\Documents\\files\\";
         String second = name;
         String last = ".txt";
         String path = first + second + last;
@@ -273,9 +263,9 @@ public class MainScreen extends javax.swing.JFrame {
             printer.print(newQuiz);        // Call class method to write to file   
             printer.close();                                // Close connection
         } catch (IOException error) {                         // catch error....
-            System.out.println("File write error");        // output message..
+            output("File write error");        // output message..
         }
-
+        output("Quiz created");
     }
 
     /**
@@ -283,9 +273,8 @@ public class MainScreen extends javax.swing.JFrame {
      */
     private void setList() {
         // set list visuals
-
-        quizList.setBackground(Color.LIGHT_GRAY);
-        quizList.setForeground(Color.BLACK);
+        quizList.setBackground(new Color(37, 42, 53));
+        //quizList.setFont(new Font(, WIDTH, WIDTH));
     }
 
     /**
@@ -298,7 +287,7 @@ public class MainScreen extends javax.swing.JFrame {
     private void edit(String item) {
         // edit quiz questions and properties
         if (item == null) {
-            System.out.println("Select a quiz");
+            output("Select a quiz!");
         } else {
             String newQuestion = JOptionPane.showInputDialog(null, "Enter a question: ");
             addToQuiz(item, newQuestion);
@@ -309,14 +298,13 @@ public class MainScreen extends javax.swing.JFrame {
 
     public void addToQuiz(String item, String text) {
         try {
-            File quizToEdit = new File("C:\\Users\\" + username + "\\Desktop\\files\\" + item);
+            File quizToEdit = new File("C:\\Users\\" + username + "\\Documents\\files\\" + item);
             FileWriter writer = new FileWriter(quizToEdit.getPath());
             PrintWriter printer = new PrintWriter(writer);
             printer.print(text + "\n");
             printer.close();
-            System.out.println("Question Added");
         } catch (IOException e) {
-            System.out.println("File Write error");
+            output("File Write error");
         }
     }
 
@@ -325,7 +313,7 @@ public class MainScreen extends javax.swing.JFrame {
         quizList.removeAll();
 
         // Get already created files
-        File folder = new File("C:\\Users\\" + username + "\\Desktop\\files\\");
+        File folder = new File("C:\\Users\\" + username + "\\Documents\\files\\");
         File[] listOfFiles = folder.listFiles();
 
         for (int i = 0; i < listOfFiles.length; i++) {
@@ -338,14 +326,28 @@ public class MainScreen extends javax.swing.JFrame {
             } else {
                 System.out.println("Empty");
             }
-            System.out.println("File " + i + " added");
+            output("File " + i + " added");
         }
+        
+        outputLabel.setText("");
     }
 
     private void deleteQuiz() {
-        String item = quizList.getSelectedItem();
-        quizList.remove(item);
-        File fileToDelete = new File("C:\\Users\\" + username + "\\Desktop\\files\\" + item);
-        fileToDelete.delete();
+        if (quizList.getSelectedItem() == null) {
+            output("Select a quiz!");
+        } else {
+            int option = JOptionPane.showConfirmDialog(null, "Are you sure?");
+            if (option == 0) {
+                String item = quizList.getSelectedItem();
+                quizList.remove(item);
+                File fileToDelete = new File("C:\\Users\\" + username + "\\Documents\\files\\" + item);
+                fileToDelete.delete();
+            }
+
+        }
+    }
+
+    private void output(String text) {
+        outputLabel.setText(text);
     }
 }
