@@ -1,10 +1,7 @@
 package internalassesment;
 
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatArcDarkContrastIJTheme;
-import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatArcDarkIJTheme;
-import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatSolarizedDarkContrastIJTheme;
 import java.awt.Color;
-import java.awt.Font;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,7 +16,9 @@ public class MainScreen extends javax.swing.JFrame {
 
     //variable to keep count of the quizes
     public int quizCount = 0;
-    final String username = System.getProperty("user.name");
+    final String USERNAME = System.getProperty("user.name");
+    public final String PATH = "C:\\Users\\" + USERNAME + "\\Downloads\\files\\";
+    //public final String PATH = System. getProperty("user. dir");
 
     /**
      * Creates new form MainScreen
@@ -45,7 +44,7 @@ public class MainScreen extends javax.swing.JFrame {
         editButton = new javax.swing.JButton();
         startButton = new javax.swing.JButton();
         createButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        deleteButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
         outputLabel = new javax.swing.JLabel();
 
@@ -75,10 +74,10 @@ public class MainScreen extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Delete");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        deleteButton.setText("Delete");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                deleteButtonActionPerformed(evt);
             }
         });
 
@@ -102,7 +101,7 @@ public class MainScreen extends javax.swing.JFrame {
                             .addComponent(createButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(editButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(deleteButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(57, 57, 57)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(outputLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -117,7 +116,7 @@ public class MainScreen extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(deleteButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(createButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -164,11 +163,9 @@ public class MainScreen extends javax.swing.JFrame {
      * @param evt
      */
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
-        quizList.getSelectedIndex();
-        String name = quizList.getSelectedItem();
-        String location = "C:\\Users\\l.mccausland\\Documents\\Files\\" + name + ".txt";
-        File quiz = new File(location);
-
+        Quiz quiz = QuizManager.getQuiz(quizList.getSelectedIndex());
+        System.out.println(quizList.getSelectedIndex());
+        System.out.println(quiz.toString());
 
     }//GEN-LAST:event_startButtonActionPerformed
 
@@ -182,10 +179,21 @@ public class MainScreen extends javax.swing.JFrame {
         edit(item);
     }//GEN-LAST:event_editButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    /**
+     * Checks if the delete button was clicked and then runs the deleteQuiz()
+     * method
+     *
+     * @param evt
+     */
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         deleteQuiz();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
+    }//GEN-LAST:event_deleteButtonActionPerformed
+    /**
+     * When the refresh button is clicked this method will run the getFiles()
+     * method
+     *
+     * @param evt
+     */
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
         getFiles();
     }//GEN-LAST:event_refreshButtonActionPerformed
@@ -230,8 +238,8 @@ public class MainScreen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton createButton;
+    private javax.swing.JButton deleteButton;
     private javax.swing.JButton editButton;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel outputLabel;
     private java.awt.List quizList;
     private javax.swing.JButton refreshButton;
@@ -250,11 +258,7 @@ public class MainScreen extends javax.swing.JFrame {
         Quiz newQuiz = new Quiz(name);
         QuizManager.addQuiz(newQuiz, quizCount);
 
-        // set save location or name
-        String first = "C:\\Users\\" + username + "\\Documents\\files\\";
-        String second = name;
-        String last = ".txt";
-        String path = first + second + last;
+        String path = PATH + name;
 
         // save quiz to permanent storage
         try {
@@ -274,7 +278,6 @@ public class MainScreen extends javax.swing.JFrame {
     private void setList() {
         // set list visuals
         quizList.setBackground(new Color(37, 42, 53));
-        //quizList.setFont(new Font(, WIDTH, WIDTH));
     }
 
     /**
@@ -298,7 +301,7 @@ public class MainScreen extends javax.swing.JFrame {
 
     public void addToQuiz(String item, String text) {
         try {
-            File quizToEdit = new File("C:\\Users\\" + username + "\\Documents\\files\\" + item);
+            File quizToEdit = new File(PATH + item);
             FileWriter writer = new FileWriter(quizToEdit.getPath());
             PrintWriter printer = new PrintWriter(writer);
             printer.print(text + "\n");
@@ -308,28 +311,29 @@ public class MainScreen extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Checks the saved files directory for any already created files. If there
+     * is any files that are already present, they are add to the JList for the
+     * user.
+     */
     private void getFiles() {
         // Clear list
         quizList.removeAll();
-
-        // Get already created files
-        File folder = new File("C:\\Users\\" + username + "\\Documents\\files\\");
+        // Get path where already created files are stored
+        File folder = new File(PATH);
+        // Create a list of files
         File[] listOfFiles = folder.listFiles();
-
+        Quiz[] quizzes = null;
         for (int i = 0; i < listOfFiles.length; i++) {
             if (listOfFiles[i].isFile()) {
-                System.out.println("File " + listOfFiles[i].getName());
-                quizList.add(listOfFiles[i].getName(), i);
-            } else if (listOfFiles[i].isDirectory()) {
-                System.out.println("Directory " + listOfFiles[i].getName());
+                quizzes[i] = new Quiz(listOfFiles[i].getName());
                 quizList.add(listOfFiles[i].getName(), i);
             } else {
-                System.out.println("Empty");
+                System.out.println("Empty Folder");
             }
-            output("File " + i + " added");
+            output("");
         }
-        
-        outputLabel.setText("");
+        QuizManager.addQuiz(quizzes);
     }
 
     private void deleteQuiz() {
@@ -340,7 +344,7 @@ public class MainScreen extends javax.swing.JFrame {
             if (option == 0) {
                 String item = quizList.getSelectedItem();
                 quizList.remove(item);
-                File fileToDelete = new File("C:\\Users\\" + username + "\\Documents\\files\\" + item);
+                File fileToDelete = new File(PATH + item);
                 fileToDelete.delete();
             }
 

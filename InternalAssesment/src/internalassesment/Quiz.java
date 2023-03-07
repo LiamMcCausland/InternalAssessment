@@ -29,4 +29,8 @@ public class Quiz {
         }
         System.out.println("Question Added");
     }
+    
+    public String toString() {
+        return this.name;
+    }
 }
