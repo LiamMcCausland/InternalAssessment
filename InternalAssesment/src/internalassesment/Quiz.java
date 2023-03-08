@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package internalassesment;
+
 /**
  *
  * @author l.mccausland
@@ -10,26 +11,22 @@ package internalassesment;
 public class Quiz {
 
     public String name;
+    public String[] questions;
+    public String[] answers;
 
     public Quiz(String name) {
         this.name = name;
     }
 
-    public String[] createQuiz() {
-        String[] newQuiz = null;
-        System.out.println("Quiz Created");
-        return newQuiz;
-    }
-
-    public void addQuestion(String[] quiz, String question, int index) {
-        for (int i = 0; i < quiz.length; i++) {
-            if (quiz[i] == null) {
-                quiz[i] = question;
+    public void addQuestion(String question, String answer) {
+        for (int i = 0; i < questions.length; i++) {
+            if (questions[i] != null) {
+                questions[i] = question;
             }
         }
         System.out.println("Question Added");
     }
-    
+
     public String toString() {
         return this.name;
     }

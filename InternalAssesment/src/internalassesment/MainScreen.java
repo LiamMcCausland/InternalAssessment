@@ -2,7 +2,9 @@ package internalassesment;
 
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatArcDarkContrastIJTheme;
 import java.awt.Color;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -164,9 +166,7 @@ public class MainScreen extends javax.swing.JFrame {
      */
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         Quiz quiz = QuizManager.getQuiz(quizList.getSelectedIndex());
-        System.out.println(quizList.getSelectedIndex());
-        System.out.println(quiz.toString());
-
+        System.out.println(quiz.name);
     }//GEN-LAST:event_startButtonActionPerformed
 
     /**
@@ -323,11 +323,21 @@ public class MainScreen extends javax.swing.JFrame {
         File folder = new File(PATH);
         // Create a list of files
         File[] listOfFiles = folder.listFiles();
-        Quiz[] quizzes = null;
+        Quiz[] quizzes = new Quiz[listOfFiles.length];
         for (int i = 0; i < listOfFiles.length; i++) {
             if (listOfFiles[i].isFile()) {
-                quizzes[i] = new Quiz(listOfFiles[i].getName());
-                quizList.add(listOfFiles[i].getName(), i);
+                try {
+                    quizzes[i] = new Quiz(listOfFiles[i].getName());
+                    FileReader reader = new FileReader(listOfFiles[i]);
+                    BufferedReader buffer = new BufferedReader(reader); 
+                    String line = buffer.readLine();                         
+                    quizzes[i].questions[i] = line;
+                    quizList.add(listOfFiles[i].getName(), i);
+                    buffer.close();
+                } catch (IOException e) {
+                    System.out.println("File Read error");
+                }
+
             } else {
                 System.out.println("Empty Folder");
             }
