@@ -49,6 +49,7 @@ public class MainScreen extends javax.swing.JFrame {
         deleteButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
         outputLabel = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -90,31 +91,41 @@ public class MainScreen extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Rockwell", 1, 48)); // NOI18N
+        jLabel1.setText("Quiza!");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(38, 38, 38)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(refreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(createButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(editButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(deleteButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(createButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(editButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(deleteButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(57, 57, 57)
+                        .addComponent(outputLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(45, 45, 45)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(outputLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(quizList, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(refreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(quizList, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(100, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(refreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(refreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -128,7 +139,7 @@ public class MainScreen extends javax.swing.JFrame {
                     .addComponent(quizList, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(outputLabel)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         pack();
@@ -240,6 +251,7 @@ public class MainScreen extends javax.swing.JFrame {
     private javax.swing.JButton createButton;
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton editButton;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel outputLabel;
     private java.awt.List quizList;
     private javax.swing.JButton refreshButton;
@@ -289,11 +301,18 @@ public class MainScreen extends javax.swing.JFrame {
 
     private void edit(String item) {
         // edit quiz questions and properties
+
         if (item == null) {
             output("Select a quiz!");
         } else {
-            String newQuestion = JOptionPane.showInputDialog(null, "Enter a question: ");
-            addToQuiz(item, newQuestion);
+            String length = JOptionPane.showInputDialog(null,
+                    "Enter how many questions you want in the quiz: ");
+            String[] questions = new String[Integer.parseInt(length)];
+            for (int i = 0; i < Integer.parseInt(length); i++) {
+                String newQuestion = JOptionPane.showInputDialog(null, "Enter question " + i + ": ");
+                questions[i] = newQuestion;
+            }
+            addToQuiz(item, questions);
         }
 
         // open the quiz and edit the questions
@@ -305,6 +324,21 @@ public class MainScreen extends javax.swing.JFrame {
             FileWriter writer = new FileWriter(quizToEdit.getPath());
             PrintWriter printer = new PrintWriter(writer);
             printer.print(text + "\n");
+            printer.close();
+        } catch (IOException e) {
+            output("File Write error");
+        }
+    }
+
+    // WITH ARRAYS
+    public void addToQuiz(String item, String[] text) {
+        try {
+            File quizToEdit = new File(PATH + item);
+            FileWriter writer = new FileWriter(quizToEdit.getPath());
+            PrintWriter printer = new PrintWriter(writer);
+            for (String line : text) {  // Enhanced loop through array..  
+                printer.println(line);      // Writing one array index..
+            }
             printer.close();
         } catch (IOException e) {
             output("File Write error");
@@ -323,26 +357,56 @@ public class MainScreen extends javax.swing.JFrame {
         File folder = new File(PATH);
         // Create a list of files
         File[] listOfFiles = folder.listFiles();
+        // Create an array of quizzes to hold the loaded quizzes. Its length is
+        // equal to the amount of files detected in the folder
         Quiz[] quizzes = new Quiz[listOfFiles.length];
+        // Loop through the listOftFiles and for each file create a new quiz,
+        // store it in the quizManager, and add it to the JList with the filename
         for (int i = 0; i < listOfFiles.length; i++) {
-            if (listOfFiles[i].isFile()) {
+            // if the file in spot i is a file then start the try-catch
+            if (listOfFiles[i].isFile() && listOfFiles[i].canRead()) {
                 try {
+                    // In quizzes spot i, create a new Quiz with the found file name
                     quizzes[i] = new Quiz(listOfFiles[i].getName());
+                    // Create a new reader with the current file
                     FileReader reader = new FileReader(listOfFiles[i]);
-                    BufferedReader buffer = new BufferedReader(reader); 
-                    String line = buffer.readLine();                         
-                    quizzes[i].questions[i] = line;
-                    quizList.add(listOfFiles[i].getName(), i);
-                    buffer.close();
-                } catch (IOException e) {
-                    System.out.println("File Read error");
-                }
+                    // Create buffered reader to read the file
+                    BufferedReader buffer = new BufferedReader(reader);
 
+                    // Read a line from the file and store it in a string var
+                    String line = buffer.readLine();
+                    // Create StringBuilder to combine all the lines of the file
+                    StringBuilder builder = new StringBuilder();
+                    // While the current line is != to null then add it to the
+                    // StringBuilder
+                    while (line != null) {
+                        //add the current line to the string buidler
+                        builder.append(line);
+                        // seperate the lines from eachother
+                        builder.append(System.lineSeparator());
+                        line = buffer.readLine();
+                    }
+                    // Get all the lines of text from the file with the string builder
+                    String text = builder.toString();
+                    // Now store the line that was read into the questions array
+                    // that is stored inside the quiz that was created 4 lines ago
+                    if (text != null) {
+                        quizzes[i].questions.set(i, text);
+                    }
+                    // Close the buffer
+                    buffer.close();
+                    // Add the quiz to the JList with the file name
+                    quizList.add(listOfFiles[i].getName(), i);
+                } catch (IOException e) {
+                    System.out.println("File write error");
+                }
             } else {
                 System.out.println("Empty Folder");
             }
+            // Make the output blank
             output("");
         }
+        // Add the array of quizzes to the quiz manager
         QuizManager.addQuiz(quizzes);
     }
 

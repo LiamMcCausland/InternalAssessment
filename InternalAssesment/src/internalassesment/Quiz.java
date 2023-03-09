@@ -11,17 +11,17 @@ package internalassesment;
 public class Quiz {
 
     public String name;
-    public String[] questions;
-    public String[] answers;
+    public LinkedList questions = new LinkedList();
+    public LinkedList answers =  new LinkedList();
 
     public Quiz(String name) {
         this.name = name;
     }
 
     public void addQuestion(String question, String answer) {
-        for (int i = 0; i < questions.length; i++) {
-            if (questions[i] != null) {
-                questions[i] = question;
+        for (int i = 0; i < questions.size(); i++) {
+            if (questions.getNode(i) != null) {
+                questions.set(i, question);
             }
         }
         System.out.println("Question Added");
