@@ -30,4 +30,12 @@ public class Quiz {
     public String toString() {
         return this.name;
     }
+    
+    public void getQuestions() {
+        String text = "";
+        //String[] arr = new String[questions.size()];
+        for (int i = 0; i < questions.size(); i++) {
+            text += questions.getNode(i);
+        }
+    }
 }

@@ -177,7 +177,13 @@ public class MainScreen extends javax.swing.JFrame {
      */
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         Quiz quiz = QuizManager.getQuiz(quizList.getSelectedIndex());
-        System.out.println(quiz.name);
+        if (quiz == null) {
+            System.out.println("Null Pointer Exception");
+        } else {
+            for (int i = 0; i < quiz.questions.size(); i++) {
+                System.out.println(quiz.questions.getNode(i));
+            }
+        }
     }//GEN-LAST:event_startButtonActionPerformed
 
     /**
@@ -186,8 +192,8 @@ public class MainScreen extends javax.swing.JFrame {
      * @param evt
      */
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        String item = quizList.getSelectedItem();
-        edit(item);
+        int index = quizList.getSelectedIndex();
+        edit(index);
     }//GEN-LAST:event_editButtonActionPerformed
 
     /**
@@ -299,20 +305,25 @@ public class MainScreen extends javax.swing.JFrame {
         // set visuals for buttons 
     }
 
-    private void edit(String item) {
-        // edit quiz questions and properties
+    private void edit(int index) {
+        // Get the quiz that we are working with
+        QuizManager manager = new QuizManager();
+        Quiz quiz = manager.getQuiz(index);
 
-        if (item == null) {
+        // edit quiz questions and properties
+        if (quizList.getSelectedItem() == null) {
             output("Select a quiz!");
         } else {
             String length = JOptionPane.showInputDialog(null,
                     "Enter how many questions you want in the quiz: ");
-            String[] questions = new String[Integer.parseInt(length)];
             for (int i = 0; i < Integer.parseInt(length); i++) {
                 String newQuestion = JOptionPane.showInputDialog(null, "Enter question " + i + ": ");
-                questions[i] = newQuestion;
+                String newAnswer = JOptionPane.showInputDialog(null, "Enter answer to question " + i + ": ");
+                quiz.questions.set(i, newQuestion);
+                quiz.answers.set(i, newAnswer);
+
             }
-            addToQuiz(item, questions);
+            //addToQuiz();
         }
 
         // open the quiz and edit the questions
@@ -421,7 +432,6 @@ public class MainScreen extends javax.swing.JFrame {
                 File fileToDelete = new File(PATH + item);
                 fileToDelete.delete();
             }
-
         }
     }
 
