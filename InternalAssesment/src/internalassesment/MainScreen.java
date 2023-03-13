@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -55,6 +56,16 @@ public class MainScreen extends javax.swing.JFrame {
         setBackground(new java.awt.Color(255, 255, 255));
 
         quizList.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        quizList.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                quizListItemStateChanged(evt);
+            }
+        });
+        quizList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quizListActionPerformed(evt);
+            }
+        });
 
         editButton.setText("Edit");
         editButton.addActionListener(new java.awt.event.ActionListener() {
@@ -176,13 +187,23 @@ public class MainScreen extends javax.swing.JFrame {
      * @param evt
      */
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
-        Quiz quiz = QuizManager.getQuiz(quizList.getSelectedIndex());
-        if (quiz == null) {
-            System.out.println("Null Pointer Exception");
-        } else {
-            for (int i = 0; i < quiz.questions.size(); i++) {
-                System.out.println(quiz.questions.getNode(i));
+        try {
+            if (quizList.getSelectedItem() == null) {
+                output("Select a Quiz!");
+            } else {
+                QuizManager manager = new QuizManager();
+                Quiz quiz = manager.getQuiz(quizList.getSelectedIndex());
+                quiz.name = quizList.getSelectedItem();
+                
+                
+                for (int i = 0; i < quiz.questions.size(); i++) {
+                    System.out.println(quiz.questions.get(i));
+                }
+                
+                output(quiz.name);
             }
+        } catch (NullPointerException e) {
+            System.out.println("Null Pointer Exception");
         }
     }//GEN-LAST:event_startButtonActionPerformed
 
@@ -214,6 +235,14 @@ public class MainScreen extends javax.swing.JFrame {
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
         getFiles();
     }//GEN-LAST:event_refreshButtonActionPerformed
+
+    private void quizListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quizListActionPerformed
+        System.out.println("click");
+    }//GEN-LAST:event_quizListActionPerformed
+
+    private void quizListItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_quizListItemStateChanged
+        output("Selected Quiz: " + quizList.getSelectedItem());
+    }//GEN-LAST:event_quizListItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -247,6 +276,10 @@ public class MainScreen extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         //set background color
         // this.getContentPane().setBackground(new Color(173, 216, 230)); //or whatever color you want in the RGB range
+        //Change Jframe Icon
+//        ImageIcon img = new ImageIcon("icons/qIcon.png");
+//        this.setIconImage(img.getImage());
+        
         //set frame visible
         this.setVisible(true);
         //set the frame resizabke property to false
@@ -321,7 +354,6 @@ public class MainScreen extends javax.swing.JFrame {
                 String newAnswer = JOptionPane.showInputDialog(null, "Enter answer to question " + i + ": ");
                 quiz.questions.set(i, newQuestion);
                 quiz.answers.set(i, newAnswer);
-
             }
             //addToQuiz();
         }

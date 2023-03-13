@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package internalassesment;
 
 import collections.LinkedList;
@@ -25,7 +21,7 @@ public class QuizManager {
     public static void addQuiz(Quiz[] quizzes) {
         for (int i = 0; i < quizzes.length; i++) {
             manager.add(quizzes[i], i);
-            System.out.println(quizzes[i].name + " was added at spot " + i);
+            System.out.println(quizzes[i].name + " was added at index " + i);
         }
     }
 
@@ -41,5 +37,14 @@ public class QuizManager {
     public static Quiz getQuiz(int index) {
         Quiz quiz = manager.get(index);
         return quiz;
+    }
+
+    public static Quiz getQuiz(String name) {
+        for (int i = 0; i < manager.size(); i++) {
+            if (manager.get(i).name == name) {
+                return manager.get(i);
+            }
+        }
+        return null;
     }
 }
