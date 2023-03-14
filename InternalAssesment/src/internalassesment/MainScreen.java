@@ -8,7 +8,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,10 +16,11 @@ import javax.swing.JOptionPane;
  */
 public class MainScreen extends javax.swing.JFrame {
 
-    //variable to keep count of the quizes
-    public int quizCount = 0;
+    public int quizCount;
     final String USERNAME = System.getProperty("user.name");
     public final String PATH = "C:\\Users\\" + USERNAME + "\\Downloads\\files\\";
+    public QuizManager quizManager = new QuizManager();
+    
     //public final String PATH = System. getProperty("user. dir");
 
     /**
@@ -30,7 +30,6 @@ public class MainScreen extends javax.swing.JFrame {
         initComponents();
         setFrame();
         setList();
-        setButtons();
         getFiles();
     }
 
@@ -191,15 +190,7 @@ public class MainScreen extends javax.swing.JFrame {
             if (quizList.getSelectedItem() == null) {
                 output("Select a Quiz!");
             } else {
-                QuizManager manager = new QuizManager();
-                Quiz quiz = manager.getQuiz(quizList.getSelectedIndex());
-                quiz.name = quizList.getSelectedItem();
-                
-                
-                for (int i = 0; i < quiz.questions.size(); i++) {
-                    System.out.println(quiz.questions.get(i));
-                }
-                
+                Quiz quiz = quizManager.getQuiz(quizList.getSelectedIndex());
                 output(quiz.name);
             }
         } catch (NullPointerException e) {
@@ -279,7 +270,7 @@ public class MainScreen extends javax.swing.JFrame {
         //Change Jframe Icon
 //        ImageIcon img = new ImageIcon("icons/qIcon.png");
 //        this.setIconImage(img.getImage());
-        
+
         //set frame visible
         this.setVisible(true);
         //set the frame resizabke property to false
@@ -307,7 +298,7 @@ public class MainScreen extends javax.swing.JFrame {
         quizList.add(name);
         quizCount++;
         Quiz newQuiz = new Quiz(name);
-        QuizManager.addQuiz(newQuiz, quizCount);
+        quizManager.addQuiz(newQuiz, quizCount);
 
         String path = PATH + name;
 
@@ -331,17 +322,9 @@ public class MainScreen extends javax.swing.JFrame {
         quizList.setBackground(new Color(37, 42, 53));
     }
 
-    /**
-     * Set side buttons visual properties
-     */
-    private void setButtons() {
-        // set visuals for buttons 
-    }
-
     private void edit(int index) {
         // Get the quiz that we are working with
-        QuizManager manager = new QuizManager();
-        Quiz quiz = manager.getQuiz(index);
+        Quiz quiz = quizManager.getQuiz(index);
 
         // edit quiz questions and properties
         if (quizList.getSelectedItem() == null) {
@@ -350,10 +333,9 @@ public class MainScreen extends javax.swing.JFrame {
             String length = JOptionPane.showInputDialog(null,
                     "Enter how many questions you want in the quiz: ");
             for (int i = 0; i < Integer.parseInt(length); i++) {
-                String newQuestion = JOptionPane.showInputDialog(null, "Enter question " + i + ": ");
-                String newAnswer = JOptionPane.showInputDialog(null, "Enter answer to question " + i + ": ");
-                quiz.questions.set(i, newQuestion);
-                quiz.answers.set(i, newAnswer);
+                String newQuestion = JOptionPane.showInputDialog(null, "Enter question " + i+1 + ": ");
+                String newAnswer = JOptionPane.showInputDialog(null, "Enter answer to question " + i+1 + ": ");
+                quiz.addQuestion(newQuestion, newAnswer);
             }
             //addToQuiz();
         }
@@ -398,8 +380,17 @@ public class MainScreen extends javax.swing.JFrame {
         quizList.removeAll();
         // Get path where already created files are stored
         File folder = new File(PATH);
+
+        File theDir = new File("PATH");
+        if (!theDir.exists()) {
+            theDir.mkdirs();
+        }
         // Create a list of files
         File[] listOfFiles = folder.listFiles();
+        
+        if (listOfFiles == null) {
+            System.out.println("Folder Empty");
+        }
         // Create an array of quizzes to hold the loaded quizzes. Its length is
         // equal to the amount of files detected in the folder
         Quiz[] quizzes = new Quiz[listOfFiles.length];
@@ -450,7 +441,7 @@ public class MainScreen extends javax.swing.JFrame {
             output("");
         }
         // Add the array of quizzes to the quiz manager
-        QuizManager.addQuiz(quizzes);
+        quizManager.addQuiz(quizzes);
     }
 
     private void deleteQuiz() {

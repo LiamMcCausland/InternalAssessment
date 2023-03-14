@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package internalassesment;
 
 /**
@@ -12,30 +8,30 @@ public class Quiz {
 
     public String name;
     public LinkedList questions = new LinkedList();
-    public LinkedList answers =  new LinkedList();
+    public LinkedList answers = new LinkedList();
 
     public Quiz(String name) {
         this.name = name;
     }
-
+    
+    /**
+     * Adds a question and answers to their designated linkedList
+     * 
+     * @param question the question to add
+     * @param answer the answer to that question
+     */
     public void addQuestion(String question, String answer) {
         for (int i = 0; i < questions.size(); i++) {
             if (questions.getNode(i) != null) {
                 questions.set(i, question);
             }
         }
-        System.out.println("Question Added");
-    }
-
-    public String toString() {
-        return this.name;
-    }
-    
-    public void getQuestions() {
-        String text = "";
-        //String[] arr = new String[questions.size()];
-        for (int i = 0; i < questions.size(); i++) {
-            text += questions.getNode(i);
+        for (int i = 0; i < answers.size(); i++) {
+            if (answers.getNode(i) != null) {
+                answers.set(i, question);
+            }
         }
+
+        System.out.println("Question Added");
     }
 }
