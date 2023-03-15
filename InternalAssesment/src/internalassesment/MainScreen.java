@@ -18,6 +18,7 @@ public class MainScreen extends javax.swing.JFrame {
     final String USERNAME = System.getProperty("user.name");
     public final String PATH = "C:\\Users\\" + USERNAME + "\\Documents\\files\\";
     public QuizManager quizManager = new QuizManager();
+    //public LinkedList quizManager = new LinkedList();
 
     //public final String PATH = System. getProperty("user. dir");
     /**
@@ -188,7 +189,8 @@ public class MainScreen extends javax.swing.JFrame {
                 output("Select a Quiz!");
             } else {
                 Quiz quiz = quizManager.getQuiz(quizList.getSelectedIndex());
-                output(quiz.name);
+                File
+                QuizScreen quizScreen = new QuizScreen(, File file = new File(PATH + quizList.getSelectedItem())));
             }
         } catch (NullPointerException e) {
             System.out.println("Null Pointer Exception");
@@ -286,12 +288,10 @@ public class MainScreen extends javax.swing.JFrame {
      */
     private void createQuiz(String name) {
         // adds the quiz to the list
-        quizList.add(name);
-        quizCount++;
+        //quizCount++;
         Quiz newQuiz = new Quiz(name);
         quizManager.addQuiz(newQuiz, quizCount);
         String path = PATH + name;
-
         // save quiz to permanent storage
         try {
             FileWriter writer = new FileWriter(path);   // First object
@@ -301,6 +301,7 @@ public class MainScreen extends javax.swing.JFrame {
         } catch (IOException error) {                         // catch error....
             output("File write error");                  // output message..
         }
+        quizList.add(name);
         output("Quiz created");
     }
 
@@ -313,21 +314,24 @@ public class MainScreen extends javax.swing.JFrame {
     }
 
     private void edit(int index) {
-        // Get the quiz that we are working with
-        Quiz quiz = quizManager.getQuiz(index);
-
+        String text = "";
         // edit quiz questions and properties
         if (quizList.getSelectedItem() == null) {
             output("Select a quiz!");
         } else {
+            // Get the quiz that we are working with
+            Quiz quiz = quizManager.getQuiz(index);
+
             String length = JOptionPane.showInputDialog(null,
                     "Enter how many questions you want in the quiz: ");
             for (int i = 0; i < Integer.parseInt(length); i++) {
                 String newQuestion = JOptionPane.showInputDialog(null, "Enter question " + i + 1 + ": ");
                 String newAnswer = JOptionPane.showInputDialog(null, "Enter answer to question " + i + 1 + ": ");
-                quiz.addQuestion(newQuestion, newAnswer);
+               //quiz.addQuestion(newQuestion, newAnswer);
+                text += newQuestion + " | " + newAnswer + "\n";
             }
-            //addToQuiz();
+            addToQuiz(quizList.getSelectedItem(),text);
+            
         }
 
         // open the quiz and edit the questions
@@ -338,22 +342,7 @@ public class MainScreen extends javax.swing.JFrame {
             File quizToEdit = new File(PATH + item);
             FileWriter writer = new FileWriter(quizToEdit.getPath());
             PrintWriter printer = new PrintWriter(writer);
-            printer.print(text + "\n");
-            printer.close();
-        } catch (IOException e) {
-            output("File Write error");
-        }
-    }
-
-    // WITH ARRAYS
-    public void addToQuiz(String item, String[] text) {
-        try {
-            File quizToEdit = new File(PATH + item);
-            FileWriter writer = new FileWriter(quizToEdit.getPath());
-            PrintWriter printer = new PrintWriter(writer);
-            for (String line : text) {  // Enhanced loop through array..  
-                printer.println(line);      // Writing one array index..
-            }
+            printer.println(text + "\n");
             printer.close();
         } catch (IOException e) {
             output("File Write error");
@@ -366,20 +355,20 @@ public class MainScreen extends javax.swing.JFrame {
         // Create a File object for the folder
         File folder = new File(PATH);
 
-        // Check if the folder exists
-        if (!folder.exists()) {
-            System.out.println("The folder does not exist.");
-            return;
-        }
-
         // Get a list of all files in the folder
         File[] files = folder.listFiles();
+
+        // Check if the folder exists
+        if (!folder.exists()) {
+            System.out.println("The folder does not exist. Creating Folder...");
+            folder.mkdir();
+        }
+
         // Check if the folder is empty
         if (files.length == 0) {
             System.out.println("The folder is empty.");
             return;
         }
-
         // Create quiz array 
         Quiz[] quizzes = new Quiz[files.length];
 
@@ -391,7 +380,10 @@ public class MainScreen extends javax.swing.JFrame {
             }
         }
 
-        quizManager.addQuiz(quizzes);
+        for (int i = 0; i < quizzes.length; i++) {
+            quizManager.addQuiz(quizzes[i], i);
+        }
+
     }
 
     private void deleteQuiz() {

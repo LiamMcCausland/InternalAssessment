@@ -19,18 +19,6 @@ public class QuizManager {
     public static void addQuiz(Quiz quiz, int index) {
         manager.add(quiz, index);
     }
-
-    /**
-     * Adds a given array of quizzes to the manager
-     * 
-     * @param quizzes the given array of quizzes
-     */
-    public static void addQuiz(Quiz[] quizzes) { 
-        for (int i = 0; i < quizzes.length; i++) {
-            manager.add(quizzes[i], i);
-            System.out.println(quizzes[i].name + " was added at index " + i);
-        }
-    }
     
     /**
      * gets the index of the given quiz from the manager

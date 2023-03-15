@@ -1,5 +1,10 @@
 package internalassesment;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 /**
  *
  * @author l.mccausland
@@ -13,10 +18,10 @@ public class Quiz {
     public Quiz(String name) {
         this.name = name;
     }
-    
+
     /**
      * Adds a question and answers to their designated linkedList
-     * 
+     *
      * @param question the question to add
      * @param answer the answer to that question
      */
