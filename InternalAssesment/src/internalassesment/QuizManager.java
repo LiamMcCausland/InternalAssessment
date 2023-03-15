@@ -25,7 +25,7 @@ public class QuizManager {
      * 
      * @param quizzes the given array of quizzes
      */
-    public static void addQuiz(Quiz[] quizzes) {
+    public static void addQuiz(Quiz[] quizzes) { 
         for (int i = 0; i < quizzes.length; i++) {
             manager.add(quizzes[i], i);
             System.out.println(quizzes[i].name + " was added at index " + i);

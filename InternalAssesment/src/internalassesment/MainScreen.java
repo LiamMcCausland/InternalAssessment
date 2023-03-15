@@ -2,9 +2,7 @@ package internalassesment;
 
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatArcDarkContrastIJTheme;
 import java.awt.Color;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,11 +16,10 @@ public class MainScreen extends javax.swing.JFrame {
 
     public int quizCount;
     final String USERNAME = System.getProperty("user.name");
-    public final String PATH = "C:\\Users\\" + USERNAME + "\\Downloads\\files\\";
+    public final String PATH = "C:\\Users\\" + USERNAME + "\\Documents\\files\\";
     public QuizManager quizManager = new QuizManager();
-    
-    //public final String PATH = System. getProperty("user. dir");
 
+    //public final String PATH = System. getProperty("user. dir");
     /**
      * Creates new form MainScreen
      */
@@ -265,12 +262,6 @@ public class MainScreen extends javax.swing.JFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         //set location to show up in the middle (null) 
         this.setLocationRelativeTo(null);
-        //set background color
-        // this.getContentPane().setBackground(new Color(173, 216, 230)); //or whatever color you want in the RGB range
-        //Change Jframe Icon
-//        ImageIcon img = new ImageIcon("icons/qIcon.png");
-//        this.setIconImage(img.getImage());
-
         //set frame visible
         this.setVisible(true);
         //set the frame resizabke property to false
@@ -299,17 +290,16 @@ public class MainScreen extends javax.swing.JFrame {
         quizCount++;
         Quiz newQuiz = new Quiz(name);
         quizManager.addQuiz(newQuiz, quizCount);
-
         String path = PATH + name;
 
         // save quiz to permanent storage
         try {
             FileWriter writer = new FileWriter(path);   // First object
             PrintWriter printer = new PrintWriter(writer);
-            printer.print(newQuiz);        // Call class method to write to file   
-            printer.close();                                // Close connection
+            printer.print(newQuiz);                        // Call class method to write to file   
+            printer.close();                                  // Close connection
         } catch (IOException error) {                         // catch error....
-            output("File write error");        // output message..
+            output("File write error");                  // output message..
         }
         output("Quiz created");
     }
@@ -333,8 +323,8 @@ public class MainScreen extends javax.swing.JFrame {
             String length = JOptionPane.showInputDialog(null,
                     "Enter how many questions you want in the quiz: ");
             for (int i = 0; i < Integer.parseInt(length); i++) {
-                String newQuestion = JOptionPane.showInputDialog(null, "Enter question " + i+1 + ": ");
-                String newAnswer = JOptionPane.showInputDialog(null, "Enter answer to question " + i+1 + ": ");
+                String newQuestion = JOptionPane.showInputDialog(null, "Enter question " + i + 1 + ": ");
+                String newAnswer = JOptionPane.showInputDialog(null, "Enter answer to question " + i + 1 + ": ");
                 quiz.addQuestion(newQuestion, newAnswer);
             }
             //addToQuiz();
@@ -370,77 +360,37 @@ public class MainScreen extends javax.swing.JFrame {
         }
     }
 
-    /**
-     * Checks the saved files directory for any already created files. If there
-     * is any files that are already present, they are add to the JList for the
-     * user.
-     */
-    private void getFiles() {
-        // Clear list
+    public void getFiles() {
         quizList.removeAll();
-        // Get path where already created files are stored
+
+        // Create a File object for the folder
         File folder = new File(PATH);
 
-        File theDir = new File("PATH");
-        if (!theDir.exists()) {
-            theDir.mkdirs();
+        // Check if the folder exists
+        if (!folder.exists()) {
+            System.out.println("The folder does not exist.");
+            return;
         }
-        // Create a list of files
-        File[] listOfFiles = folder.listFiles();
-        
-        if (listOfFiles == null) {
-            System.out.println("Folder Empty");
-        }
-        // Create an array of quizzes to hold the loaded quizzes. Its length is
-        // equal to the amount of files detected in the folder
-        Quiz[] quizzes = new Quiz[listOfFiles.length];
-        // Loop through the listOftFiles and for each file create a new quiz,
-        // store it in the quizManager, and add it to the JList with the filename
-        for (int i = 0; i < listOfFiles.length; i++) {
-            // if the file in spot i is a file then start the try-catch
-            if (listOfFiles[i].isFile() && listOfFiles[i].canRead()) {
-                try {
-                    // In quizzes spot i, create a new Quiz with the found file name
-                    quizzes[i] = new Quiz(listOfFiles[i].getName());
-                    // Create a new reader with the current file
-                    FileReader reader = new FileReader(listOfFiles[i]);
-                    // Create buffered reader to read the file
-                    BufferedReader buffer = new BufferedReader(reader);
 
-                    // Read a line from the file and store it in a string var
-                    String line = buffer.readLine();
-                    // Create StringBuilder to combine all the lines of the file
-                    StringBuilder builder = new StringBuilder();
-                    // While the current line is != to null then add it to the
-                    // StringBuilder
-                    while (line != null) {
-                        //add the current line to the string buidler
-                        builder.append(line);
-                        // seperate the lines from eachother
-                        builder.append(System.lineSeparator());
-                        line = buffer.readLine();
-                    }
-                    // Get all the lines of text from the file with the string builder
-                    String text = builder.toString();
-                    // Now store the line that was read into the questions array
-                    // that is stored inside the quiz that was created 4 lines ago
-                    if (text != null) {
-                        quizzes[i].questions.set(i, text);
-                    }
-                    // Close the buffer
-                    buffer.close();
-                    // Add the quiz to the JList with the file name
-                    quizList.add(listOfFiles[i].getName(), i);
-                } catch (IOException e) {
-                    System.out.println("File write error");
-                }
-            } else {
-                System.out.println("Empty Folder");
-            }
-            // Make the output blank
-            output("");
+        // Get a list of all files in the folder
+        File[] files = folder.listFiles();
+        // Check if the folder is empty
+        if (files.length == 0) {
+            System.out.println("The folder is empty.");
+            return;
         }
-        // Add the array of quizzes to the quiz manager
+
+        // Create quiz array 
+        Quiz[] quizzes = new Quiz[files.length];
+
+        // Print the list of files in the folder
+        for (int i = 0; i < files.length; i++) {
+            if (files[i].isFile()) {
+                quizList.add(files[i].getName());
+                quizzes[i] = new Quiz(files[i].getName());
+            }
+        }
+
         quizManager.addQuiz(quizzes);
     }
 
