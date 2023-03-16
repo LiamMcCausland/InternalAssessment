@@ -184,17 +184,15 @@ public class MainScreen extends javax.swing.JFrame {
      * @param evt
      */
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
-        try {
-            if (quizList.getSelectedItem() == null) {
-                output("Select a Quiz!");
-            } else {
-                Quiz quiz = quizManager.getQuiz(quizList.getSelectedIndex());
-                File
-                QuizScreen quizScreen = new QuizScreen(, File file = new File(PATH + quizList.getSelectedItem())));
-            }
-        } catch (NullPointerException e) {
-            System.out.println("Null Pointer Exception");
+
+        if (quizList.getSelectedItem() == null) {
+            output("Select a Quiz!");
+        } else {
+            Quiz quiz = quizManager.getQuiz(quizList.getSelectedIndex());
+            File file = new File(PATH + quizList.getSelectedItem());
+            QuizScreen quizScreen = new QuizScreen(quiz, file);
         }
+
     }//GEN-LAST:event_startButtonActionPerformed
 
     /**
@@ -288,7 +286,6 @@ public class MainScreen extends javax.swing.JFrame {
      */
     private void createQuiz(String name) {
         // adds the quiz to the list
-        //quizCount++;
         Quiz newQuiz = new Quiz(name);
         quizManager.addQuiz(newQuiz, quizCount);
         String path = PATH + name;
@@ -322,22 +319,25 @@ public class MainScreen extends javax.swing.JFrame {
             // Get the quiz that we are working with
             Quiz quiz = quizManager.getQuiz(index);
 
+//            int edit = JOptionPane.showOptionDialog(this,
+//           "Do you want to edit a sinlge question or theentire quiz?", "Quiza");
+            
             String length = JOptionPane.showInputDialog(null,
                     "Enter how many questions you want in the quiz: ");
             for (int i = 0; i < Integer.parseInt(length); i++) {
-                String newQuestion = JOptionPane.showInputDialog(null, "Enter question " + i + 1 + ": ");
-                String newAnswer = JOptionPane.showInputDialog(null, "Enter answer to question " + i + 1 + ": ");
-               //quiz.addQuestion(newQuestion, newAnswer);
+                String newQuestion = JOptionPane.showInputDialog(null, "Enter question " + (i + 1) + ": ");
+                String newAnswer = JOptionPane.showInputDialog(null, "Enter answer to question " + (i + 1) + ": ");
+                //quiz.addQuestion(newQuestion, newAnswer);
                 text += newQuestion + " | " + newAnswer + "\n";
             }
-            addToQuiz(quizList.getSelectedItem(),text);
-            
+            write(quizList.getSelectedItem(), text);
+
         }
 
         // open the quiz and edit the questions
     }
 
-    public void addToQuiz(String item, String text) {
+    public void write(String item, String text) {
         try {
             File quizToEdit = new File(PATH + item);
             FileWriter writer = new FileWriter(quizToEdit.getPath());

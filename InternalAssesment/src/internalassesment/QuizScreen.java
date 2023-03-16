@@ -5,7 +5,9 @@
 package internalassesment;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 
 /**
@@ -14,15 +16,19 @@ import javax.swing.JOptionPane;
  */
 public class QuizScreen extends javax.swing.JFrame {
 
+    public String[] questions;
+    public String[] answers;
+
     //public QuizManager manager = new QuizManager();
     /**
      * Creates new form QuizScreen
      */
-    public QuizScreen(Quiz quiz) {
+    public QuizScreen(Quiz quiz, File file) {
         initComponents();
         setFrame();
-        getQnA();
-        test(quiz);
+        getQnA(quiz, file);
+        test();
+        quit();
 
     }
 
@@ -122,28 +128,61 @@ public class QuizScreen extends javax.swing.JFrame {
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 
-    private void getQnA(Quiz quiz) {
-        String[] questions;
-        String[] answers;
-
+    private void getQnA(Quiz quiz, File file) {
         try {
-            file = chooser.getSelectedFile();
-            FileReader reader = new FileReader(file);       // Connect.....
-            BufferedReader buffer = new BufferedReader(reader); // Connect.....            
-            String line = buffer.readLine();                    // Read line...       
-            while (line != null) {                  // Loop until no inputs left
-                System.out.println("This line read was " + line); // Output....
-                line = buffer.readLine();                       // Read again..
+            FileReader reader = new FileReader(file);
+            BufferedReader buffer = new BufferedReader(reader);
+            String line = buffer.readLine();
+            int count = 0;
+            while (line != null) {
+                count++;
+                line = buffer.readLine();
             }
-            buffer.close();                                     // Close connect  
+            buffer.close();
+            questions = new String[count];
+            answers = new String[count];
+            reader = new FileReader(file);
+            buffer = new BufferedReader(reader);
+            line = buffer.readLine();
+            int i = 0;
+            while (line != null) {
+                String[] parts = line.split("\\|");
+                if (parts.length == 2) {
+                    questions[i] = parts[0].trim();
+                    answers[i] = parts[1].trim();
+                    System.out.println("Question: " + questions[i] + " Answer: " + answers[i]);
+                    i++;
+                }
+                line = buffer.readLine();
+            }
+            buffer.close();
         } catch (IOException e) {
+            e.printStackTrace();
         }
-
     }
 
-    private void test(Quiz quiz) {
-        JOptionPane.showInputDialog(this, "");
+    private void test() {
+        int numQuestions = questions.length;
+        int numCorrect = 0;
+        for (int i = 0; i < numQuestions; i++) {
+            if (questions[i] == null) {
+                JOptionPane.showMessageDialog(this, "You got " + numCorrect + " out of " + numQuestions + " questions correct.");
+                return;
+            }
+            String userAnswer = JOptionPane.showInputDialog(this, "Question " + (i + 1) + ": " + questions[i]);
+            if (userAnswer.trim().equalsIgnoreCase(answers[i])) {
+                JOptionPane.showMessageDialog(this, "Correct!");
+                numCorrect++;
+            } else {
+                JOptionPane.showMessageDialog(this, "Incorrect. The correct answer is: " + answers[i]);
+            }
+        }
+        JOptionPane.showMessageDialog(this, "You got " + numCorrect + " out of " + numQuestions + " questions correct.");
+    }
 
+    private void quit() {
+        this.setVisible(false);
+        this.dispose();
     }
 
 }
